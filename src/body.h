@@ -5,6 +5,18 @@
 struct Body
 {
 public:
+	Vector2 position{ 0, 0 };
+	Vector2 velocity{ 0, 0 };
+
+	float size{ 1 };
+	float damping{ 0.3f };
+
+	Color color{ WHITE };
+
+	Body* next{ nullptr };
+	Body* prev{ nullptr };
+
+public:
 	Body() = default;
 	Body(const Vector2& position, const Vector2& velocity, const float size, const Color& color) :
 		position{ position },
@@ -12,19 +24,12 @@ public:
 		size{ size },
 		color{ color }
 	{ }
+	Body(const Vector2& position, const float size, const Color& color) :
+		position{ position },
+		size{ size },
+		color{ color }
+	{ }
 
-public:
-	Vector2 position;
-	Vector2 velocity;
-
-	float size;
-
-	Color color;
-
-	Body* next{ nullptr };
-	Body* prev{ nullptr };
-
-public:
 	void Step(float dt);
 	void Draw(const Scene& scene);
 };
