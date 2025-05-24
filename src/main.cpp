@@ -9,6 +9,7 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 
 #include "trigonometry_scene.h"
 #include "vector_scene.h"
+#include "spring_scene.h"
 #include "polar_scene.h"
 #include "raylib.h"
 
@@ -28,15 +29,24 @@ int main ()
 	// Load a texture from the resources directory
 	Texture wabbit = LoadTexture("wabbit_alpha.png");
 
-	Scene* scene = new VectorScene("Vector", 1280, 720);
+	Scene* scene = new SpringScene("Spring", 1280, 720);
 	scene->Initialize();
+	SetTargetFPS(60);
 
+	float timeAccumulator = 0;
 	// game loop
 	while (!WindowShouldClose())		// run the loop untill the user presses ESCAPE or presses the Close button on the window
 	{
 		scene->Update();
+		timeAccumulator += std::min(GetFrameTime(), 0.5f); // deltatime
+		while (timeAccumulator >= Scene::fixedTimestep)
+		{
+			scene->FixedUpdate();
+			timeAccumulator -= Scene::fixedTimestep;
+		}
 		scene->BeginDraw();
 		scene->Draw();
+		scene->DrawGUI();
 		scene->EndDraw();
 	}
 

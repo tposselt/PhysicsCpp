@@ -1,11 +1,16 @@
 #pragma once
 #include "scene.h"
 
-class PolarScene : public Scene
+class Body;
+
+class SpringScene : public Scene
 {
 private:
+	Body* m_selectedBody{ nullptr };
+	Body* m_connectBody{ nullptr };
+
 public:
-	PolarScene(const std::string& title, int width, int height, const Color& background = BLACK) :
+	SpringScene(const std::string& title, int width, int height, const Color& background = BLACK) :
 		Scene(title, width, height, background)
 	{
 	}
