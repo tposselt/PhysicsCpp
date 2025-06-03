@@ -28,6 +28,24 @@ void Spring::ApplyForce(float damping, float kMultiplier)
 	bodyB->ApplyForce(Vector2Negate(force));
 }
 
+void Spring::ApplyForce(const Vector2& position, Body& body, float restLength, float k)
+{
+	// direction = bodyA <---- bodyB
+	Vector2 direction = position - body.position;
+	float lengthSqr = Vector2LengthSqr(direction);
+	if (lengthSqr <= EPSILON) return;
+
+	// calculate spring forces
+	float length = sqrtf(lengthSqr);
+	float displacement = length - restLength;
+	float forceMagnitude = -k * displacement; // Hooke's law
+
+	Vector2 ndirection = direction / length;
+	Vector2 force = ndirection * forceMagnitude;
+
+	body.ApplyForce(Vector2Negate(force));
+}
+
 void Spring::Draw(const Scene& scene)
 {
 	scene.DrawLine(bodyA->position, bodyB->position, 3, WHITE);

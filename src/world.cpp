@@ -3,6 +3,8 @@
 #include "gravitation.h"
 #include "raymath.h"
 #include "gui.h"
+#include "collision.h"
+#include "contact.h"
 
 float World::bodyGScale{ 1.0f };
 float World::bodyDamping{ 0.3f };
@@ -51,6 +53,10 @@ void World::Step(float timestep)
         body->Step(timestep);
         body->ClearForce();
     }
+
+    m_contacts.clear();
+    CreateContacts(m_bodies, m_contacts);
+    SeparateContacts(m_contacts);
 }
 
 void World::Draw(const Scene& scene)

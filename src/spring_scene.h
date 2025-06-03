@@ -1,7 +1,7 @@
 #pragma once
 #include "scene.h"
 
-class Body;
+struct Body;
 
 class SpringScene : public Scene
 {

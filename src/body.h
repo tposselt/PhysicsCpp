@@ -12,6 +12,13 @@ public:
 		Static
 	};
 
+	enum class ForceMode
+	{
+		Force,
+		Impulse,
+		Velocity
+	};
+
 public:
 	Vector2 position{ 0, 0 };
 	Vector2 velocity{ 0, 0 };
@@ -67,6 +74,6 @@ public:
 
 	void Step(float dt);
 	void Draw(const Scene& scene);
-	void ApplyForce(const Vector2& force);
+	void ApplyForce(const Vector2& force, ForceMode foceMode = ForceMode::Force);
 	void ClearForce();
 };
