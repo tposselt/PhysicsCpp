@@ -49,6 +49,31 @@ void SeparateContacts(contacts_t& contacts)
 	}
 }
 
+void ResolveContacts(contacts_t& contacts)
+{
+	for (auto& contact : contacts)
+	{
+		// compute relative velocity
+		Vector2 rv = contact.bodyA->velocity - contact.bodyB->velocity;
+		// project relative velocity onto the contact normal
+		float nv = Vector2DotProduct(rv, contact.normal);
+
+		// skip if bodies are separating
+		if (nv > 0) continue;
+
+		// compute impulse magnitude
+		float totalInverseMass = contact.bodyA->inverseMass + contact.bodyB->inverseMass;
+		float impulseMagnitude = -(1 + contact.restitution) * nv / totalInverseMass;
+
+		// compute impulse vector
+		Vector2 impulse = contact.normal * impulseMagnitude;
+
+		// apply impulses to both bodies
+		contact.bodyA->ApplyForce(impulse, Body::ForceMode::Impulse);
+		contact.bodyB->ApplyForce(Vector2Negate(impulse), Body::ForceMode::Impulse);
+	}
+}
+
 bool Intersects(Body* bodyA, Body* bodyB)
 {
 	float distance = Vector2Distance(bodyA->position, bodyB->position);
