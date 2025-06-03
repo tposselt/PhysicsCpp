@@ -1,6 +1,7 @@
 #pragma once
 #include "scene.h"
 #include "raylib.h"
+#include "aabb.h"
 
 struct Body
 {
@@ -76,4 +77,5 @@ public:
 	void Draw(const Scene& scene);
 	void ApplyForce(const Vector2& force, ForceMode foceMode = ForceMode::Force);
 	void ClearForce();
+	AABB GetAABB() const { return AABB{ position, { size * 2, size * 2 } }; }
 };
